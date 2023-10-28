@@ -9,8 +9,8 @@ Author: [Your Name]
 Date: [Date]
 """
 
-import win32com.client
 import tkinter as tk
+import meterfeeder as mf
 
 class RandomWalkBiasAmplifier:
     """Implements the Random Walk Bias Amplifier technique."""
@@ -36,10 +36,9 @@ class RandomWalkBiasAmplifier:
         return None
 
 def predict_color():
-    """Predicts a color using the QWQNG API."""
-    qng = win32com.client.Dispatch("QWQNG.QNG")
+    """Predicts a color using the MeterFeeder API."""
     colors = ["red", "blue", "green", "yellow"]
-    rand_index = int(qng.RandUniform * len(colors))
+    rand_index = int(mf.rand_uniform() * len(colors))
     return colors[rand_index]
 
 class QuantumColorPredictor:
@@ -92,5 +91,7 @@ class QuantumColorPredictor:
         self.window.mainloop()
 
 if __name__ == "__main__":
+    mf.load_library()
+    mf.get_devices()
     game = QuantumColorPredictor()
     game.run()
