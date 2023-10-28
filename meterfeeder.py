@@ -47,3 +47,10 @@ def get_devices():
         kvs = generatorsList[i].split("|")
         devices[kvs[0]] = kvs[1]
         print("\t" + str(kvs[0]) + "->" + kvs[1])
+
+def rand_uniform():
+    # Get a RandUniform, taking the first device in the list (if multiple devices connected)
+    firstDevice = next(iter(devices))
+    ret_RandUniform = METER_FEEDER_LIB.MF_RandUniform(firstDevice.encode("utf-8"), med_error_reason)
+    print("MeterFeeder::MF_RandUniform: result: " + str(ret_RandUniform) + ", error (if any): ", med_error_reason.value)
+    return ret_RandUniform
