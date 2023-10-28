@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import Canvas
-import meterfeeder_init as mf
+import meterfeeder as mf
 import time
 
 class RandomWalkBiasAmplifier:
@@ -32,10 +32,7 @@ class QuantumPulse:
         self.pulse()
 
     def pulse(self):
-        # Get a random frequency using MeterFeeder, taking the first device in the list (if multiple devices connected)
-        firstDevice = next(iter(mf.devices))
-        frequency = mf.METER_FEEDER_LIB.MF_RandUniform(firstDevice.encode("utf-8"), mf.med_error_reason)
-        print("MeterFeeder::MF_RandUniform: result: " + str(frequency) + ", error (if any): ", mf.med_error_reason.value)
+        frequency = mf.rand_uniform()
         
         # Apply bias amplification
         bit = int(frequency > 0.5)
