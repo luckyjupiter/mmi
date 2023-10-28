@@ -1,5 +1,5 @@
 import tkinter as tk
-import win32com.client
+import meterfeeder as mf
 import math
 
 class RandomWalkBiasAmplifier:
@@ -31,15 +31,12 @@ class QuantumHotAndCold:
         self.window = tk.Tk()
         self.window.title("Quantum Hot and Cold")
         
-        # Initialize the Quantum RNG
-        self.qng = win32com.client.Dispatch("QWQNG.QNG")
-        
         # Randomly select a starting target point on the grid
-        self.target_x = int(self.qng.RandUniform * 10)
-        self.target_y = int(self.qng.RandUniform * 10)
+        self.target_x = int(mf.rand_uniform() * 10)
+        self.target_y = int(mf.rand_uniform() * 10)
         
         # Apply bias amplification methods to potentially influence the target point
-        bits = [int(self.qng.RandUniform > 0.5) for _ in range(1000)]
+        bits = [int(mf.rand_uniform() > 0.5) for _ in range(1000)]
         if majority_voting(bits) == 1:
             self.target_x = (self.target_x + 1) % 10
         else:
@@ -83,8 +80,8 @@ class QuantumHotAndCold:
         if distance == 0:
             self.hits += 1
             feedback = "You found it!"
-            self.target_x = int(self.qng.RandUniform * 10)
-            self.target_y = int(self.qng.RandUniform * 10)
+            self.target_x = int(mf.rand_uniform() * 10)
+            self.target_y = int(mf.rand_uniform() * 10)
         elif distance < 3:
             feedback = "Hot!"
             self.grid_buttons[x][y].config(bg=f"#{255-color_intensity:02x}0000")
@@ -98,4 +95,6 @@ class QuantumHotAndCold:
         self.feedback_label.config(text=f"{feedback} Accuracy: {accuracy:.2f}%")
         
 if __name__ == "__main__":
+    mf.load_library()
+    mf.get_devices()
     QuantumHotAndCold()
