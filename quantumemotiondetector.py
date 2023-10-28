@@ -1,5 +1,5 @@
 import tkinter as tk
-import win32com.client
+import meterfeeder as mf
 import time
 import sys
 
@@ -42,8 +42,6 @@ class QuantumEmotionDetector:
         self.window = tk.Tk()
         self.window.title("Quantum Emotion Detector")
 
-        self.qng = win32com.client.Dispatch("QWQNG.QNG")
-
         self.emotions = ["happiness", "sadness", "anger", "fear", "surprise", "disgust"]
 
         self.label = tk.Label(self.window, text="Select an emotion you want to send to the computer:")
@@ -75,7 +73,7 @@ class QuantumEmotionDetector:
 
         loading_animation(5)  # Simulate longer processing time
 
-        bits = [int(self.qng.RandUniform > 0.5) for _ in range(100000)]
+        bits = [int(mf.rand_uniform() > 0.5) for _ in range(100000)]
         majority_result = majority_voting(bits)
 
         rwba = RandomWalkBiasAmplifier(5)
@@ -87,7 +85,7 @@ class QuantumEmotionDetector:
         else:
             bias = majority_result
 
-        index = int(self.qng.RandUniform * len(self.emotions))
+        index = int(mf.rand_uniform() * len(self.emotions))
         index = (index + bias) % len(self.emotions)
 
         detected_emotion = self.emotions[index]
@@ -101,4 +99,6 @@ class QuantumEmotionDetector:
         self.stats_label.config(text=f"Matches: {self.matches} | Mismatches: {self.mismatches}")
 
 if __name__ == "__main__":
+    mf.load_library()
+    mf.get_devices()
     QuantumEmotionDetector()

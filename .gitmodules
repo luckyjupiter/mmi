@@ -1,0 +1,3 @@
+[submodule "meterfeeder"]
+	path = meterfeeder
+	url = https://github.com/vfp2/meterfeeder

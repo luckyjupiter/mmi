@@ -1,26 +1,23 @@
 import tkinter as tk
 from tkinter import Canvas
+import meterfeeder as mf
 import time
-import win32com.client
 
 class RandomWalkBiasAmplifier:
     def __init__(self, bound):
         self.bound = bound
         self.counter = 0
-
     def process_bit(self, bit):
         if bit == 1:
             self.counter += 1
         else:
             self.counter -= 1
-
         if self.counter >= self.bound:
             self.counter = 0
             return 1
         elif self.counter <= -self.bound:
             self.counter = 0
             return 0
-
         return None
 
 class QuantumPulse:
@@ -30,14 +27,12 @@ class QuantumPulse:
         self.canvas = Canvas(self.root, bg="white", height=400, width=400)
         self.canvas.pack(pady=20)
         
-        self.qng = win32com.client.Dispatch("QWQNG.QNG")
         self.rwba = RandomWalkBiasAmplifier(5)
 
         self.pulse()
 
     def pulse(self):
-        # Get a random frequency using QWQNG
-        frequency = self.qng.RandUniform
+        frequency = mf.rand_uniform()
         
         # Apply bias amplification
         bit = int(frequency > 0.5)
@@ -60,6 +55,9 @@ class QuantumPulse:
         self.root.after(int(1000 * frequency), self.pulse)
 
 if __name__ == "__main__":
+    mf.load_library()
+    mf.get_devices()
+
     root = tk.Tk()
     app = QuantumPulse(root)
     root.mainloop()
