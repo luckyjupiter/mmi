@@ -10,13 +10,13 @@ def load_library():
     global METER_FEEDER_LIB
     if platform == "linux" or platform == "linux2":
         # Linux
-        METER_FEEDER_LIB = cdll.LoadLibrary(os.getcwd() + '/libmeterfeeder.so')
+        METER_FEEDER_LIB = cdll.LoadLibrary(os.getcwd() + '/meterfeeder/builds/linux/libmeterfeeder.so')
     elif platform == "darwin":
         # OS X
-        METER_FEEDER_LIB = cdll.LoadLibrary(os.getcwd() + '/libmeterfeeder.dylib')
+        METER_FEEDER_LIB = cdll.LoadLibrary(os.getcwd() + '/meterfeeder/builds/mac/libmeterfeeder.dylib')
     elif platform == "win32":
         # Windows
-        METER_FEEDER_LIB = cdll.LoadLibrary(os.getcwd() + '/meterfeeder.dll')
+        METER_FEEDER_LIB = cdll.LoadLibrary(os.getcwd() + '/meterfeeder/builds/windows/meterfeeder.dll')
     METER_FEEDER_LIB.MF_Initialize.argtypes = c_char_p,
     METER_FEEDER_LIB.MF_Initialize.restype = c_int
     METER_FEEDER_LIB.MF_GetNumberGenerators.restype = c_int
@@ -52,5 +52,5 @@ def rand_uniform():
     # Get a RandUniform, taking the first device in the list (if multiple devices connected)
     firstDevice = next(iter(devices))
     ret_RandUniform = METER_FEEDER_LIB.MF_RandUniform(firstDevice.encode("utf-8"), med_error_reason)
-    print("MeterFeeder::MF_RandUniform: result: " + str(ret_RandUniform) + ", error (if any): ", med_error_reason.value)
+    #print("MeterFeeder::MF_RandUniform: result: " + str(ret_RandUniform) + ", error (if any): ", med_error_reason.value)
     return ret_RandUniform
